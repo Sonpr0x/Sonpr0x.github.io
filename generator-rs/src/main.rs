@@ -284,7 +284,7 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
     channel.set_items(items);
 
     let mut output_file = File::create("./rss.xml").unwrap();
-    output_file.write_all(channel.to_string().as_bytes());
+    output_file.write_all(channel.to_string().as_bytes()).ok();
 }
 
 fn parse_post(template: &str, shared: &Shared, path: &Path, force: bool) -> Option<Metadata> {
