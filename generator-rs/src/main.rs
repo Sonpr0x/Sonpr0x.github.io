@@ -199,7 +199,7 @@ fn parse_metadata(path: &Path) -> Metadata {
 fn generate_index_page(posts: &Vec<Metadata>) {
     //dotenv().ok();
     let date_format = env::var("DATE_FORMAT").unwrap();
-    let domain_name = env::var("DOMAIN_NAME").unwrap();
+    let _domain_name = env::var("DOMAIN_NAME").unwrap();
     if let Ok(template) = load_template("index") {
         let html: Vec<String> = posts.into_iter().map(|p| {
             let file_name = p.output_file.file_name().unwrap().to_str().unwrap();
@@ -314,11 +314,11 @@ fn main() {
     dotenv().ok();
 
     let args: Vec<String> = env::args().collect();
-    let mut folder = ".";
+    //let mut folder = ".";
     if args.len() > 1 {
         let param = &args[1];
 
-        if (param != "preview") {
+        if param != "preview" {
             folder = param;
             // Generator mode
 
@@ -327,7 +327,7 @@ fn main() {
                 let mut shared = Shared { tags: HashMap::new() };
 
                 let _ = for_each_extension("md", folder, &mut shared, move |shared, path| {
-                    let mut post = parse_metadata(path);
+                    let post = parse_metadata(path);
                     if post_can_be_parsed(&post.published) {
                         println!("Title: {}\nTags: {:?}\nFile: {:?}\n", post.title, post.tags, post.output_file.file_name());
                         // Parse tags
@@ -394,7 +394,7 @@ fn main() {
                 router!(request,
                     (GET) (/view/{file_name: String}) => {
                         if let Ok(template) = load_template("preview") {
-                            let mut shared = Shared { tags: HashMap::new() };
+                            let shared = Shared { tags: HashMap::new() };
                             let path = PathBuf::from(format!("./posts/{}.md", file_name));
                             let abs_path = fs::canonicalize(&path).unwrap();
                             if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
