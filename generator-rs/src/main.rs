@@ -314,7 +314,7 @@ fn main() {
     dotenv().ok();
 
     let args: Vec<String> = env::args().collect();
-    //let mut folder = ".";
+    let folder = ".";
     if args.len() > 1 {
         let param = &args[1];
 
