@@ -142,8 +142,10 @@ fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts
 }
 
 fn save_as_html(html: &str, output_path: &PathBuf) -> std::io::Result<bool> {
-    let mut output_file = File::create(output_path).unwrap();
+    println!("TEST: {}", output_path.display());
+    let mut output_file = File::create(output_path)?;
     output_file.write_all(html.as_bytes())?;
+    //rintln!("TEST: {}", output_file.display());
     Ok(true)
 }
 
@@ -207,7 +209,7 @@ fn generate_index_page(posts: &Vec<Metadata>) {
             let post_date_text = post_date.format(&date_format);
             let tag_list = &p.tags.join(", ");
             let guest_tag = if p.published.eq("guest") {
-                "<span class='guest-post'>Guest Post</span>"
+                "<span class='guest-post'>Guest Post, </span>"
             } else {
                 ""
             };
@@ -284,7 +286,7 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
     channel.set_items(items);
 
     let mut output_file = File::create("./rss.xml").unwrap();
-    output_file.write_all(channel.to_string().as_bytes()).ok();
+    output_file.write_all(channel.to_string().as_bytes()).unwrap();
 }
 
 fn parse_post(template: &str, shared: &Shared, path: &Path, force: bool) -> Option<Metadata> {
@@ -314,7 +316,7 @@ fn main() {
     dotenv().ok();
 
     let args: Vec<String> = env::args().collect();
-    let folder;
+    let mut folder = ".";
     if args.len() > 1 {
         let param = &args[1];
 
@@ -326,10 +328,10 @@ fn main() {
             if let Ok(template) = load_template(folder) {
                 let mut shared = Shared { tags: HashMap::new() };
 
-                let _ = for_each_extension("md", folder, &mut shared, move |shared, path| {
+                let _= for_each_extension("md", folder, &mut shared, move |shared, path| {
                     let post = parse_metadata(path);
                     if post_can_be_parsed(&post.published) {
-                        println!("Title: {}\nTags: {:?}\nFile: {:?}\n", post.title, post.tags, post.output_file.file_name());
+                        println!("Title: {}\nTags: {:?}\nFile: {:?}\nCCCC\n", post.title, post.tags, post.output_file.file_name());
                         // Parse tags
                         for tag in &post.tags {
                             if post_can_be_published(&post.published) {
@@ -376,34 +378,56 @@ fn main() {
                 println!("Tags: {:?}", shared.tags);
                 generate_tags_page(&shared.tags);
 
+                println!("RSSSSSSSSSSSSSSSSSSSSS");
                 generate_rss_feed(&posts);
             }
 
         } else {
             // Preview mode
-            println!("Preview server running at :3123");
+            println!("Preview server running at 0.0.0.0:80");
 
-            rouille::start_server("localhost:3123", move |request| {
+            rouille::start_server("0.0.0.0:80", |request| {
                 {
                     let response = rouille::match_assets(&request, ".");
+                    //return rouille::Response::text("hello world");
                     println!("MATCHING {:?}", response);
                     if response.is_success() {
                         return response;
                     }
                 }
                 router!(request,
+                    // route post
                     (GET) (/view/{file_name: String}) => {
                         if let Ok(template) = load_template("preview") {
                             let shared = Shared { tags: HashMap::new() };
-                            let path = PathBuf::from(format!("./posts/{}.md", file_name));
+                            let path = PathBuf::from(format!("./posts/{}.html", file_name));
                             let abs_path = fs::canonicalize(&path).unwrap();
                             if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
                                 let output = post.output_html.replace("\"img", "\"/posts/img").to_string();
-                                return rouille::Response::html(output); 
+                                return rouille::Response::html(output);
+                                
                             }
                         }
                         rouille::Response::empty_404()
                     },
+
+                    // route index
+                    (GET) (/) => {
+                        if let Ok(template) = load_template("index") {
+                            let shared = Shared { tags: HashMap::new() };
+                            let file_name = "index.html";
+                            let path = PathBuf::from(format!("{}", file_name));
+                            let abs_path = fs::canonicalize(&path).unwrap();
+                            if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
+                                let output = post.output_html.replace("\"img", "\"/posts/img").to_string();
+                                println!("TEST");
+                                return rouille::Response::html(output);
+                                
+                            }
+                        }
+                        rouille::Response::empty_404()
+                    },
+
 
                     _ => rouille::Response::empty_404()
                 )
