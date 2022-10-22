@@ -24,4 +24,4 @@ run server
 note: edit host name at line **389**.
 
 ## How to custom
-self-advocacy
+Go ahead yourself xD
