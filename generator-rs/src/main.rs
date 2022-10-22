@@ -2,9 +2,9 @@ extern crate comrak;
 extern crate regex;
 extern crate rss;
 extern crate time;
-extern crate dotenv;
+extern crate dotenv; //var env
 #[macro_use]
-extern crate rouille;
+extern crate rouille; //web
 extern crate chrono;
 
 use dotenv::dotenv;
@@ -44,6 +44,7 @@ struct Metadata {
     output_file: PathBuf,
     output_html: String
 }
+
 
 fn post_can_be_parsed(status: &str) -> bool {
     status.eq("true") || status.eq("guest") || status.eq("private")
@@ -139,6 +140,7 @@ fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts
         .replace("{%postslug%}", &file_name.replace(".html", ""))
         .replace("{%posturl%}", &format!("{}/posts/{}", env::var("DOMAIN_NAME").unwrap(), file_name));
     format!("{}", html)
+
 }
 
 fn save_as_html(html: &str, output_path: &PathBuf) -> std::io::Result<bool> {
@@ -213,7 +215,7 @@ fn generate_index_page(posts: &Vec<Metadata>) {
             } else {
                 ""
             };
-            format!("<div class='home-list-item'><span class='home-date-indicator'>{}</span>{}{}<br/><a href='/posts/{}'>{}</a></div>", post_date_text, guest_tag, tag_list, file_name, p.title)
+            format!("<div class='home-list-item'><span class='home-date-indicator'>{}</span>{}{}<br/><a href='/posts/{}'>{}</a></div>", post_date_text, guest_tag, tag_list, file_name.replace(".html"," "), p.title)
         }).collect();
         let markdown = html.join("\n");
         let mut post = Metadata {
@@ -384,9 +386,9 @@ fn main() {
 
         } else {
             // Preview mode
-            println!("Preview server running at 0.0.0.0:80");
+            println!("Preview server running at 10.0.0.11:3123");
 
-            rouille::start_server("0.0.0.0:80", |request| {
+            rouille::start_server("10.0.0.11:3123", |request| {
                 {
                     let response = rouille::match_assets(&request, ".");
                     //return rouille::Response::text("hello world");
@@ -397,37 +399,29 @@ fn main() {
                 }
                 router!(request,
                     // route post
-                    (GET) (/view/{file_name: String}) => {
-                        if let Ok(template) = load_template("preview") {
-                            let shared = Shared { tags: HashMap::new() };
-                            let path = PathBuf::from(format!("./posts/{}.html", file_name));
-                            let abs_path = fs::canonicalize(&path).unwrap();
-                            if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
-                                let output = post.output_html.replace("\"img", "\"/posts/img").to_string();
-                                return rouille::Response::html(output);
-                                
-                            }
-                        }
+                    (GET) (/posts/{file_name: String}) => {
+                        let f = File::open(format!("./posts/{}.html", file_name));
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
                         rouille::Response::empty_404()
                     },
 
                     // route index
                     (GET) (/) => {
-                        if let Ok(template) = load_template("index") {
-                            let shared = Shared { tags: HashMap::new() };
-                            let file_name = "index.html";
-                            let path = PathBuf::from(format!("{}", file_name));
-                            let abs_path = fs::canonicalize(&path).unwrap();
-                            if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
-                                let output = post.output_html.replace("\"img", "\"/posts/img").to_string();
-                                println!("TEST");
-                                return rouille::Response::html(output);
-                                
-                            }
-                        }
-                        rouille::Response::empty_404()
+                        let f = File::open("index.html");
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
                     },
 
+                    //route tag
+                    (GET) (/tags/{file_name: String}) => {
+                        let f = File::open(format!("./tags/{}.html", file_name));
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
+                    },
 
                     _ => rouille::Response::empty_404()
                 )
