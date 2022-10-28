@@ -1,9 +1,9 @@
 # Ristretto-rs generate **Windows** version (install & build on Windows)
 ## Fixs bad code
 1. Fix path without extension (http://localhost:3123/view/<file-name-without-the-extension>)
-2. Add index route, route direct to html file
-3. Fix error no such file after generate file
-... bla bla bla
+2. Add index route, route direct to html file   
+3. Fix error no such file after generate file   
+... bla bla bla   
 
 ## Preps
 1. Install Rust: rustup.rs
@@ -14,8 +14,8 @@ First, build
 cd generator-rs
 cargo build
 ```
-Writing posts
-**/posts/*.md**
+Writing posts    
+**/posts/*.md**   
 ```
 ---
 title: <string>
