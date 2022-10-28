@@ -1,54 +1,27 @@
-# Ristretto: An opinionated blog engine
+## Fixs bad code
+1. Fix path without extension (http://localhost:3123/view/<file-name-without-the-extension>)
+2. Add index route, route direct to html file
+3. Fix error no such file after generate file
 
-This is the blog engine that powered my blog (https://thefullsnack.com)
+Coming soon:
+- Convert to static web for github website
+- Custom theme
 
 ## How to use?
-
-First, compile the generator. You'll need to install Rust (https://rustup.rs/).
-
+First, build
 ```
 cd generator-rs
 cargo build
 ```
-
-The executable binary will be available at `./generator-rs/target/debug/generator-rs` and you can run it via the `gen` symlink in the root folder.
-
+generate (.md > .hmtl, metadatas bla bla), run file `gen` symlink in the root folder
 ```
 ./gen posts
 ```
-
-## How to write post?
-
-All posts should be located in `./posts` folder, in markdown format. Each post should starts with some metadata:
-
-**posts/new-post.md**
-```
----
-title: <string>
-published: true | false | private | guest
-date: YYYY-DD-mm HH:MM:SS
-tags: <string>, <string>,...
-description: <string>
-image: <url to a featured image>
----
-```
-
-## How do I publish a post?
-
-Make sure your `published` field is set to `true` or `private` (generated but not show in homepage) or `guest` (shown as guest post).
-
-Run the following command:
-
-```
-./gen posts
-```
-
-## Can I preview my post while writing?
-
-Run the previewer:
-
+run server
 ```
 ./gen preview
 ```
+note: edit host name at line **389**.
 
-Then you can go to `http://localhost:3123/view/<file-name-without-the-extension>`, for example: `http://localhost:3123/view/life-with-robot`.
+## How to custom
+Go ahead yourself xD

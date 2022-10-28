@@ -144,8 +144,13 @@ fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts
 }
 
 fn save_as_html(html: &str, output_path: &PathBuf) -> std::io::Result<bool> {
+<<<<<<< HEAD
+=======
+    println!("TEST: {}", output_path.display());
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
     let mut output_file = File::create(output_path)?;
     output_file.write_all(html.as_bytes())?;
+    //rintln!("TEST: {}", output_file.display());
     Ok(true)
 }
 
@@ -285,7 +290,11 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
     }
     channel.set_items(items);
 
+<<<<<<< HEAD
     let mut output_file = File::create(r".\rss.xml").unwrap();
+=======
+    let mut output_file = File::create("./rss.xml").unwrap();
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
     output_file.write_all(channel.to_string().as_bytes()).unwrap();
 }
 
@@ -330,7 +339,10 @@ fn main() {
         let param = &args[1];
 
         if param != "preview" {
+<<<<<<< HEAD
             
+=======
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
             folder = param;
             // Generator mode
 
@@ -341,7 +353,7 @@ fn main() {
                 let _= for_each_extension("md", folder, &mut shared, move |shared, path| {
                     let post = parse_metadata(path);
                     if post_can_be_parsed(&post.published) {
-                        println!("Title: {}\nTags: {:?}\nFile: {:?}\n", post.title, post.tags, post.output_file.file_name());
+                        println!("Title: {}\nTags: {:?}\nFile: {:?}\nCCCC\n", post.title, post.tags, post.output_file.file_name());
                         // Parse tags
                         for tag in &post.tags {
                             if post_can_be_published(&post.published) {
@@ -388,12 +400,17 @@ fn main() {
                 println!("\n# Tags: ");
                 generate_tags_page(&shared.tags);
 
+<<<<<<< HEAD
                 println!("\n# RSS generate:");
+=======
+                println!("RSSSSSSSSSSSSSSSSSSSSS");
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
                 generate_rss_feed(&posts);
             }
 
         } else {
             // Preview mode
+<<<<<<< HEAD
             let IP = "localhost:3123";
             println!("Preview server running at {}", &IP);
 
@@ -401,6 +418,15 @@ fn main() {
                 {   
                     let response = rouille::match_assets(&request, ".");
 
+=======
+            println!("Preview server running at 10.0.0.11:3123");
+
+            rouille::start_server("10.0.0.11:3123", |request| {
+                {
+                    let response = rouille::match_assets(&request, ".");
+                    //return rouille::Response::text("hello world");
+                    println!("MATCHING {:?}", response);
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
                     if response.is_success() {
                         return response;
                     }
@@ -408,6 +434,7 @@ fn main() {
                 router!(request,
                     // route post
                     (GET) (/posts/{file_name: String}) => {
+<<<<<<< HEAD
                         let cc = check(&file_name);
                         if cc {
                             let f = File::open(format!(r".\posts\{}.html", file_name));
@@ -461,6 +488,30 @@ fn main() {
                         }
                     },*/
 
+=======
+                        let f = File::open(format!("./posts/{}.html", file_name));
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
+                        rouille::Response::empty_404()
+                    },
+
+                    // route index
+                    (GET) (/) => {
+                        let f = File::open("index.html");
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
+                    },
+
+                    //route tag
+                    (GET) (/tags/{file_name: String}) => {
+                        let f = File::open(format!("./tags/{}.html", file_name));
+                        let mut output = String::new();
+                        f.expect("Unable to open").read_to_string(&mut output);
+                        return rouille::Response::html(output);
+                    },
+>>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
 
                     _ => rouille::Response::empty_404()
                 )
