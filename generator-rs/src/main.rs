@@ -2,9 +2,9 @@ extern crate comrak;
 extern crate regex;
 extern crate rss;
 extern crate time;
-extern crate dotenv;
+extern crate dotenv; //var env
 #[macro_use]
-extern crate rouille;
+extern crate rouille; //web
 extern crate chrono;
 
 use dotenv::dotenv;
@@ -45,6 +45,7 @@ struct Metadata {
     output_html: String
 }
 
+
 fn post_can_be_parsed(status: &str) -> bool {
     status.eq("true") || status.eq("guest") || status.eq("private")
 }
@@ -59,7 +60,7 @@ fn load_template(folder: &str) -> std::io::Result<String> {
     } else {
         folder
     };
-    let mut f_template = File::open(format!("./templates/{}.template.html", template))?;
+    let mut f_template = File::open(format!(r".\templates\{}.template.html", template))?;
     let mut template_source = String::new();
     let _result = f_template.read_to_string(&mut template_source)?;
     Ok(template_source)
@@ -84,7 +85,7 @@ fn for_each_extension<F: Fn(&mut Shared, &Path) -> Option<Metadata>>(extension: 
 
 fn generate_tags(text: &str, tags: &Vec<String>) -> String {
     //dotenv().ok();
-    let output: Vec<String> = tags.into_iter().map(|t| format!("<a class='topic-tag' href='/tags/{}.html'>{}</a>", t, t)).collect();
+    let output: Vec<String> = tags.into_iter().map(|t| format!("<a class='topic-tag' href='/tags/{}'>{}</a>", t, t)).collect();
     let inner_html = output.as_slice().join("");
     format!("<div class='other-tags'><b>{}Tags:</b> {}</div>", text, inner_html)
 }
@@ -110,7 +111,7 @@ fn generate_related_post(shared: Option<&Shared>, tags: &Vec<String>, current: S
 
 fn generate_meta(post: &Metadata) -> String {
     let domain_name = env::var("DOMAIN_NAME").unwrap();
-    let default_img = format!("{}/img/default.jpg", domain_name);
+    let default_img = format!(r"{}/img/default.jpg", domain_name);
     let img = match post.image.as_ref() {
         "" => &default_img[..],
         _  => &post.image
@@ -137,12 +138,13 @@ fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts
         .replace("{%tags%}", &generate_tags(tag_text, &post.tags))
         .replace("{%related%}", &generate_related_post(related_posts, &post.tags, (&post.title).to_string()))
         .replace("{%postslug%}", &file_name.replace(".html", ""))
-        .replace("{%posturl%}", &format!("{}/posts/{}", env::var("DOMAIN_NAME").unwrap(), file_name));
+        .replace("{%posturl%}", &format!(r"{}\posts\{}", env::var("DOMAIN_NAME").unwrap(), file_name));
     format!("{}", html)
+
 }
 
 fn save_as_html(html: &str, output_path: &PathBuf) -> std::io::Result<bool> {
-    let mut output_file = File::create(output_path).unwrap();
+    let mut output_file = File::create(output_path)?;
     output_file.write_all(html.as_bytes())?;
     Ok(true)
 }
@@ -199,7 +201,7 @@ fn parse_metadata(path: &Path) -> Metadata {
 fn generate_index_page(posts: &Vec<Metadata>) {
     //dotenv().ok();
     let date_format = env::var("DATE_FORMAT").unwrap();
-    let domain_name = env::var("DOMAIN_NAME").unwrap();
+    let _domain_name = env::var("DOMAIN_NAME").unwrap();
     if let Ok(template) = load_template("index") {
         let html: Vec<String> = posts.into_iter().map(|p| {
             let file_name = p.output_file.file_name().unwrap().to_str().unwrap();
@@ -207,11 +209,11 @@ fn generate_index_page(posts: &Vec<Metadata>) {
             let post_date_text = post_date.format(&date_format);
             let tag_list = &p.tags.join(", ");
             let guest_tag = if p.published.eq("guest") {
-                "<span class='guest-post'>Guest Post</span>"
+                "<span class='guest-post'>Guest Post, </span>"
             } else {
                 ""
             };
-            format!("<div class='home-list-item'><span class='home-date-indicator'>{}</span>{}{}<br/><a href='/posts/{}'>{}</a></div>", post_date_text, guest_tag, tag_list, file_name, p.title)
+            format!("<div class='home-list-item'><span class='home-date-indicator'>{}</span>{}{}<br/><a href='/posts/{}'>{}</a></div>", post_date_text, guest_tag, tag_list, file_name.replace(".html"," "), p.title)
         }).collect();
         let markdown = html.join("\n");
         let mut post = Metadata {
@@ -222,11 +224,11 @@ fn generate_index_page(posts: &Vec<Metadata>) {
             image: "".to_string(),
             tags: vec![],
             markdown: markdown,
-            output_file: PathBuf::from("./index.html"),
+            output_file: PathBuf::from(r".\index.html"),
             output_html: format!("")
         };
         post.output_html = apply_template(&template, &post, "", None);
-        let _ = save_as_html(&post.output_html, &PathBuf::from("./index.html"));
+        let _ = save_as_html(&post.output_html, &PathBuf::from(r".\index.html"));
     }
 }
 
@@ -235,7 +237,7 @@ fn generate_tags_page(tags: &HashMap<String, Vec<Article>>) {
     if let Ok(template) = load_template("tags") {
         for (key, value) in tags.into_iter() {
             println!("{} - {:?}", key, value);
-            let post_list: Vec<String> = value.into_iter().map(|a| format!("- [{}](/posts/{})", a.title, a.url)).collect();
+            let post_list: Vec<String> = value.into_iter().map(|a| format!(r"- [{}](/posts/{})", a.title, a.url.replace(".html", ""))).collect();
             let markdown = post_list.join("\n");
             let tags_except_key: Vec<String> = tags.keys().into_iter().filter(|k| *k != key).map(|k| format!("{}", k)).collect();
             let post = Metadata {
@@ -246,7 +248,7 @@ fn generate_tags_page(tags: &HashMap<String, Vec<Article>>) {
                 image: "".to_string(),
                 tags: Vec::from(tags_except_key),
                 markdown: markdown,
-                output_file: PathBuf::from(&format!("./tags/{}.html", &key)),
+                output_file: PathBuf::from(&format!(r".\tags\{}.html", &key)),
                 output_html: format!("")
             };
             let output_html = apply_template(&template, &post, "Other ", None);
@@ -271,7 +273,7 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
         let post_date_text = post_date.to_rfc2822();
         println!("{:?}  {:?}  {:?}", post_date, post_date_text, &post.date);
         let mut item = rss::Item::default();
-        let link = format!("{}/posts/{}", env::var("DOMAIN_NAME").unwrap(), file_name);
+        let link = format!(r"{}\posts\{}", env::var("DOMAIN_NAME").unwrap(), file_name);
         let mut guid = rss::Guid::default();
         guid.set_value(link.clone());
         item.set_title(format!("{}", &post.title));
@@ -283,8 +285,8 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
     }
     channel.set_items(items);
 
-    let mut output_file = File::create("./rss.xml").unwrap();
-    output_file.write_all(channel.to_string().as_bytes());
+    let mut output_file = File::create(r".\rss.xml").unwrap();
+    output_file.write_all(channel.to_string().as_bytes()).unwrap();
 }
 
 fn parse_post(template: &str, shared: &Shared, path: &Path, force: bool) -> Option<Metadata> {
@@ -310,15 +312,25 @@ fn parse_post(template: &str, shared: &Shared, path: &Path, force: bool) -> Opti
     None
 }
 
+fn check(file_url: &str) -> bool {
+    let re = Regex::new(r"^[a-z,A-Z,0-9,\-]*$");
+    if re.expect("nhu cc").is_match(file_url) {
+        return true
+    } else {
+        return false
+    }
+}
+
 fn main() {
     dotenv().ok();
-
+    env::set_current_dir(Path::new(r"..\..\..\")).is_ok();
     let args: Vec<String> = env::args().collect();
     let mut folder = ".";
     if args.len() > 1 {
         let param = &args[1];
 
-        if (param != "preview") {
+        if param != "preview" {
+            
             folder = param;
             // Generator mode
 
@@ -326,8 +338,8 @@ fn main() {
             if let Ok(template) = load_template(folder) {
                 let mut shared = Shared { tags: HashMap::new() };
 
-                let _ = for_each_extension("md", folder, &mut shared, move |shared, path| {
-                    let mut post = parse_metadata(path);
+                let _= for_each_extension("md", folder, &mut shared, move |shared, path| {
+                    let post = parse_metadata(path);
                     if post_can_be_parsed(&post.published) {
                         println!("Title: {}\nTags: {:?}\nFile: {:?}\n", post.title, post.tags, post.output_file.file_name());
                         // Parse tags
@@ -370,40 +382,85 @@ fn main() {
                     tb.cmp(&ta)
                 });
 
-                println!("Total {} posts", posts.len());
+                println!("\n# Total {} posts", posts.len());
                 generate_index_page(&posts);
 
-                println!("Tags: {:?}", shared.tags);
+                println!("\n# Tags: ");
                 generate_tags_page(&shared.tags);
 
+                println!("\n# RSS generate:");
                 generate_rss_feed(&posts);
             }
 
         } else {
             // Preview mode
-            println!("Preview server running at :3123");
+            let IP = "localhost:3123";
+            println!("Preview server running at {}", &IP);
 
-            rouille::start_server("localhost:3123", move |request| {
-                {
+            rouille::start_server(&IP, |request| {
+                {   
                     let response = rouille::match_assets(&request, ".");
-                    println!("MATCHING {:?}", response);
+
                     if response.is_success() {
                         return response;
                     }
                 }
                 router!(request,
-                    (GET) (/view/{file_name: String}) => {
-                        if let Ok(template) = load_template("preview") {
-                            let mut shared = Shared { tags: HashMap::new() };
-                            let path = PathBuf::from(format!("./posts/{}.md", file_name));
-                            let abs_path = fs::canonicalize(&path).unwrap();
-                            if let Some(post) = parse_post(&template, &shared, &PathBuf::from(abs_path), true) {
-                                let output = post.output_html.replace("\"img", "\"/posts/img").to_string();
-                                return rouille::Response::html(output); 
-                            }
+                    // route post
+                    (GET) (/posts/{file_name: String}) => {
+                        let cc = check(&file_name);
+                        if cc {
+                            let f = File::open(format!(r".\posts\{}.html", file_name));
+                            let mut output = String::new();
+                            f.expect("can't read").read_to_string(&mut output).unwrap();
+                            return rouille::Response::html(output);
+                        }
+                        println!("not match regex: :D");
+                        rouille::Response::empty_404()
+                    },
+
+                    // route index
+                    (GET) (/{file_name: String}) => {
+                        let cc = check(&file_name);
+                        if cc {
+                            let f = File::open(r".\index.html");
+                            let mut output = String::new();
+                            f.expect("can't read").read_to_string(&mut output);
+                            return rouille::Response::html(output);
+                        } else {
+                            rouille::Response::redirect_303(".")
+                        }
+                    },
+
+                    //route tag
+                    (GET) (/tags/{file_name: String}) => {
+                        let cc = check(&file_name);
+                        if cc {
+                            let f = File::open(format!("./tags/{}.html", file_name));
+                            let mut output = String::new();
+                            f.expect("can't read").read_to_string(&mut output);
+                            return rouille::Response::html(output);
                         }
                         rouille::Response::empty_404()
                     },
+
+                    //def level 2 dir | warning: needed config to route more public directory
+                    /*(GET) (/{folder: String}/{file_name: String}) => {
+                        //match folder
+                        let mut checkk = false;
+                        match folder.as_str() {
+                            "posts" => checkk = true,
+                            "tags" => checkk = true,
+                            _ => checkk = false,
+                        }
+                        let cc = check(&file_name);
+                        if !cc || checkk {
+                            return rouille::Response::redirect_303(".");
+                        } else {
+                            return rouille::Response::empty_404()
+                        }
+                    },*/
+
 
                     _ => rouille::Response::empty_404()
                 )
@@ -411,3 +468,4 @@ fn main() {
         }
     }
 }
+

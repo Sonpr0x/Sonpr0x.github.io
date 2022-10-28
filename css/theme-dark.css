@@ -136,7 +136,6 @@ code {
 
 .hljs {
     background: none !important;
-    overflow-x: hidden !important;
 }
 
 pre {
@@ -257,7 +256,7 @@ table tr:nth-last-child(1) td {
   border-radius: 23px;
   content: " ";
   display: inline-block;
-  background: url(../img/avatar.jpg) no-repeat center center;
+  background: url(../img/avatar-post.png) no-repeat center center;
   background-size: contain;
   float: left;
 }
@@ -884,4 +883,45 @@ hr {
 {
 	background-color: #333333;
   border: none;
+}
+
+/*Switch theme button*/
+input[type=checkbox] {
+   height: 0;
+   width: 0;
+   visibility: hidden;
+}
+ .label {
+   cursor: pointer;
+   text-indent: -9999px;
+   width: 40px;
+   height: 20px;
+   background: grey;
+   display: inline-block;
+   border-radius: 100px;
+   position: relative;
+   top: 25%;
+   float: right;
+
+}
+  .label:after {
+   content: '';
+   position: absolute;
+   top: 1px;
+   left: 1px;
+   width: 18px;
+   height: 18px;
+   background: #fff;
+   border-radius: 18px;
+   transition: 0.3s;
+}
+ input:checked + .label {
+   background: #99d5e8;
+}
+ input:checked + .label:after {
+   left: calc(100% - 1px);
+   transform: translateX(-100%);
+}
+  .label:active:after {
+   width: 26px;
 }
