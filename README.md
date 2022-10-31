@@ -1,4 +1,4 @@
-# Ristretto-rs generate **Windows** version (install & build on Windows)
+# Ristretto-rs: **Windows** version (install & build on Windows)
 ## Fixs bad code
 1. Fix path without extension (http://localhost:3123/view/<file-name-without-the-extension>)
 2. Add index route, route direct to html file   
