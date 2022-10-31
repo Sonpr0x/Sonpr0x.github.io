@@ -6,7 +6,7 @@
 ... bla bla bla   
 
 ## Preps
-1. Install Rust: rustup.rs
+1. Install Rust: [rustup.rs](https://www.rust-lang.org/tools/install)
 
 ## How to use?
 First, build
@@ -27,16 +27,15 @@ image: <url to a featured image>
 ---
 ```
 ```
-generate posts (.md > .hmtl, metadatas bla bla), run file `gen` symlink in the root folder
+.\generator-rs\target\debug\generator-rs.exe posts (.md > .hmtl, metadatas bla bla), run file `gen` symlink in the root folder
 ```
-./gen posts
+```
+.\generator-rs\target\debug\generator-rs.exe posts
 ```
 run preview server, default `localhost:3123`.
 ```
-./gen preview
+.\generator-rs\target\debug\generator-rs.exe preview
 ```
 note: edit host name at line **389**.
 
 
-## How to custom
-Go ahead yourself xD
