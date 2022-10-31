@@ -36,6 +36,6 @@ run preview server, default `localhost:3123`.
 ```
 .\generator-rs\target\debug\generator-rs.exe preview
 ```
-note: edit host name at line **389**.
-
+note: edit host name at line **389**.   
+Preview index at `localhost:3123`, posts at `localhost:3123/posts/<post-name>`
 
