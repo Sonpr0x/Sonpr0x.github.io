@@ -15,7 +15,7 @@ cd generator-rs
 cargo build
 ```
 Writing posts    
-**/posts/*.md**   
+**\posts\*.md**   
 ```
 ---
 title: <string>
