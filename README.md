@@ -26,9 +26,7 @@ description: <string>
 image: <url to a featured image>
 ---
 ```
-```
 .\generator-rs\target\debug\generator-rs.exe posts (.md > .hmtl, metadatas bla bla), run file `gen` symlink in the root folder
-```
 ```
 .\generator-rs\target\debug\generator-rs.exe posts
 ```
