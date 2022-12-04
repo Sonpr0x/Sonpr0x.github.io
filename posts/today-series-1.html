@@ -4,7 +4,7 @@
         <title>Today's series</title>
         <meta charset="utf-8">
         <meta http-equiv="content-type" content="text/html;"><meta name=viewport content="initial-scale=1.0 maximum-scale=1.0">
-        <meta property='og:image' content='Sonpr0x.github.io/img/default.jpg'>
+        <meta property='og:image' content='Sonpr0x.github.io\img\default.jpg'>
         <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,130 +37,9 @@
         <div class="container">
             <div class="main">
                 <h1>Today's series</h1>
-                <p>Scan network tools, documents, benchmark hardden, guides, security baseline</p>
-<h3><a href="#some-formats-of-markdown-language" aria-hidden="true" class="anchor" id="some-formats-of-markdown-language"></a>Some formats of markdown language</h3>
-<p>explain: <code>[^&quot;number&quot;]</code>, <code>[^&quot;number&quot;]:</code><br />
-math: <code>&lt;pre class='math'&gt;$$</code>, <code>$$&lt;/pre&gt;</code></p>
-<h3><a href="#switch-button-change-themes-for-website" aria-hidden="true" class="anchor" id="switch-button-change-themes-for-website"></a>Switch button change themes for website</h3>
-<p>HTML codes:</p>
-<pre><code class="language-html">&lt;span&gt;
-	&lt;input onclick=&quot;SwitchTheme()&quot; type=&quot;checkbox&quot; id=&quot;switch&quot; /&gt;
-	&lt;label class=&quot;label&quot; for=&quot;switch&quot;&gt;&lt;/label&gt;
-&lt;/span&gt;
-</code></pre>
-<p>JS codes:</p>
-<pre><code class="language-javascript">function SwitchTheme() {
-  let checked = document.getElementById(&quot;switch&quot;).checked;
-  
-  if (checked) {
-  	document.getElementById('theme').innerHTML = '&lt;link id=&quot;theme&quot; href=&quot;/css/theme-dark.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;';
-  } else {
-  	document.getElementById('theme').innerHTML = '&lt;link id=&quot;theme&quot; href=&quot;/css/theme.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;';
-  }
-}
-</code></pre>
-<h3><a href="#command-get-current-date-data-format" aria-hidden="true" class="anchor" id="command-get-current-date-data-format"></a>Command get current date data, format</h3>
-<pre><code>Get-Date
-Get-Date -Format &quot;yyyy-MM-dd HH:mm K&quot;
-</code></pre>
-<p><a href="https://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-Date?view=powershell-7.2&viewFallbackFrom=powershell-3.0">https://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-Date?view=powershell-7.2&amp;viewFallbackFrom=powershell-3.0</a></p>
-<h3><a href="#pentest-tools" aria-hidden="true" class="anchor" id="pentest-tools"></a>Pentest tools</h3>
-<ul>
-<li>
-<p>SecLists<br />
-<a href="https://github.com/danielmiessler/SecLists">https://github.com/danielmiessler/SecLists</a></p>
-</li>
-<li>
-<p>Metasploit<br />
-<a href="https://docs.metasploit.com/docs/pentesting/metasploit-guide-ssh.html">https://docs.metasploit.com/docs/pentesting/metasploit-guide-ssh.html</a></p>
-</li>
-<li>
-<p>Nmap scan ports</p>
-<ul>
-<li>Pn option (Treat all hosts as online -- skip host discovery)</li>
-<li>Many ports open LOL</li>
-<li>Scan hosts, regex for match pattern <code>([0-9]*\.){3}[0-9]*</code> redirect to file that save all live hosts /home/nmap</li>
-<li>Gathering service infomation \hardden\scanned-26-10.txt</li>
-<li>Distinguished regex vs wildcard</li>
-</ul>
-</li>
-</ul>
-<h3><a href="#found-some-cves-on-my-system" aria-hidden="true" class="anchor" id="found-some-cves-on-my-system"></a>Found some cves on my system</h3>
-<p>CVE-2021-36958<br />
-CVE-2021-34527<br />
-let's fix its</p>
-<h3><a href="#benchmark-score-harddening-system" aria-hidden="true" class="anchor" id="benchmark-score-harddening-system"></a>Benchmark score harddening system</h3>
-<p><a href="https://github.com/0x6d69636b/windows_hardening">https://github.com/0x6d69636b/windows_hardening</a>
-output: \hardden\scorecheck.txt</p>
-<h3><a href="#problems-with-excute-script-on-windows-11-powershell-5.2" aria-hidden="true" class="anchor" id="problems-with-excute-script-on-windows-11-powershell-5.2"></a>Problems with excute script on windows 11, powershell 5.2</h3>
-<p><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.2">https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.2</a></p>
-<ul>
-<li>
-<p>PowerShell execution policies:</p>
-<ul>
-<li>AllSigned</li>
-<li>Bypass</li>
-<li>Default</li>
-<li>RemoteSigned</li>
-<li>Restricted</li>
-<li>Undefined</li>
-<li>Unrestricted</li>
-</ul>
-</li>
-<li>
-<p>Scopes:<br />
-<code>Get-ExecutionPolicy -List</code></p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Scope</th>
-<th>ExecutionPolicy</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MachinePolicy</td>
-<td>Undefined</td>
-</tr>
-<tr>
-<td>UserPolicy</td>
-<td>Undefined</td>
-</tr>
-<tr>
-<td>Process</td>
-<td>Undefined</td>
-</tr>
-<tr>
-<td>CurrentUser</td>
-<td>RemoteSigned</td>
-</tr>
-<tr>
-<td>LocalMachine</td>
-<td>AllSigned</td>
-</tr></tbody></table>
-<ul>
-<li>Change policy:</li>
-</ul>
-<pre><code>Set-ExecutionPolicy -ExecutionPolicy &lt;PolicyName&gt; -Scope &lt;scope&gt;
-example.exe -ExecutionPolicy AllSigned
-</code></pre>
-<p>More?:
-Get-Item | Unblock-File</p>
-<h3><a href="#resources-harddening" aria-hidden="true" class="anchor" id="resources-harddening"></a>Resources harddening</h3>
-<p>Cheatsheet ref cis:<br />
-<a href="https://security.uconn.edu/server-hardening-standard-windows/#">https://security.uconn.edu/server-hardening-standard-windows/#</a><br />
-<a href="https://learn.microsoft.com/en-us/windows/security/">https://learn.microsoft.com/en-us/windows/security/</a><br />
-<a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines">https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines</a><br />
-<a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/security-compliance-toolkit-10">https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/security-compliance-toolkit-10</a></p>
-<p>Microsoft's service assurance, Implement policy, security baseline, hardening bla bla<br />
-<a href="https://learn.microsoft.com/en-us/compliance/">https://learn.microsoft.com/en-us/compliance/</a><br />
-<a href="https://learn.microsoft.com/en-us/compliance/regulatory/offering-home">https://learn.microsoft.com/en-us/compliance/regulatory/offering-home</a></p>
-<p>CIS Benchmark PDFs download<br />
-<a href="https://downloads.cisecurity.org/#/">https://downloads.cisecurity.org/#/</a></p>
+                <p>\r\nScan network tools, documents, benchmark hardden, guides, security baseline\r\n\r\n### Some formats of markdown language\r\nexplain: <code>[^&quot;number&quot;]</code>, <code>[^&quot;number&quot;]:</code>   \r\nmath: <code>&lt;pre class='math'&gt;$$</code>, <code>$$&lt;/pre&gt;</code>   \r\n\r\n### Switch button change themes for website\r\nHTML codes:\r\n<code>html\r\n&lt;span&gt;\r\n &lt;input onclick=&quot;SwitchTheme()&quot; type=&quot;checkbox&quot; id=&quot;switch&quot; /&gt;\r\n &lt;label class=&quot;label&quot; for=&quot;switch&quot;&gt;&lt;/label&gt;\r\n&lt;/span&gt;\r\n</code>\r\nJS codes:\r\n<code>javascript\r\nfunction SwitchTheme() {\r\n let checked = document.getElementById(&quot;switch&quot;).checked;\r\n \r\n if (checked) {\r\n document.getElementById('theme').innerHTML = '&lt;link id=&quot;theme&quot; href=&quot;/css/theme-dark.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;';\r\n } else {\r\n document.getElementById('theme').innerHTML = '&lt;link id=&quot;theme&quot; href=&quot;/css/theme.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;';\r\n }\r\n}\r\n</code>\r\n\r\n### Command get current date data, format\r\n<code>\r\nGet-Date\r\nGet-Date -Format &quot;yyyy-MM-dd HH:mm K&quot;\r\n</code>\r\nhttps://learn.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-Date?view=powershell-7.2&amp;viewFallbackFrom=powershell-3.0\r\n\r\n### Pentest tools\r\n- SecLists   \r\nhttps://github.com/danielmiessler/SecLists\r\n\r\n- Metasploit   \r\nhttps://docs.metasploit.com/docs/pentesting/metasploit-guide-ssh.html\r\n\r\n- Nmap scan ports\r\n	- Pn option (Treat all hosts as online -- skip host discovery)\r\n	- Many ports open LOL\r\n	- Scan hosts, regex for match pattern <code>([0-9]*\.){3}[0-9]*</code> redirect to file that save all live hosts /home/nmap\r\n	- Gathering service infomation \hardden\scanned-26-10.txt\r\n	- Distinguished regex vs wildcard\r\n\r\n### Found some cves on my system\r\nCVE-2021-36958   \r\nCVE-2021-34527  \r\nlet's fix its  \r\n\r\n### Benchmark score harddening system\r\nhttps://github.com/0x6d69636b/windows_hardening\r\noutput: \hardden\scorecheck.txt   \r\n\r\n### Problems with excute script on windows 11, powershell 5.2\r\nhttps://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.2\r\n\r\n- PowerShell execution policies:\r\n	- AllSigned\r\n	- Bypass\r\n	- Default\r\n	- RemoteSigned\r\n	- Restricted\r\n	- Undefined\r\n	- Unrestricted\r\n\r\n- Scopes:  \r\n<code>Get-ExecutionPolicy -List</code>   \r\n   \r\n|     Scope     | ExecutionPolicy |\r\n|---------------|-----------------|\r\n| MachinePolicy | Undefined       |\r\n| UserPolicy    | Undefined       |\r\n| Process       | Undefined       |\r\n| CurrentUser   | RemoteSigned    |\r\n| LocalMachine  | AllSigned       |\r\n\r\n- Change policy:   \r\n <code>\r\n Set-ExecutionPolicy -ExecutionPolicy &lt;PolicyName&gt; -Scope &lt;scope&gt;\r\n example.exe -ExecutionPolicy AllSigned\r\n</code>\r\nMore?:\r\nGet-Item | Unblock-File\r\n\r\n### Resources harddening\r\nCheatsheet ref cis:  \r\nhttps://security.uconn.edu/server-hardening-standard-windows/#  \r\nhttps://learn.microsoft.com/en-us/windows/security/  \r\nhttps://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines  \r\nhttps://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/security-compliance-toolkit-10  \r\n\r\nMicrosoft's service assurance, Implement policy, security baseline, hardening bla bla  \r\nhttps://learn.microsoft.com/en-us/compliance/  \r\nhttps://learn.microsoft.com/en-us/compliance/regulatory/offering-home  \r\n\r\nCIS Benchmark PDFs download  \r\nhttps://downloads.cisecurity.org/#/  \r\n\r\n</p>
 
-                <div class='other-tags'><b>Tags:</b> <a class='topic-tag' href='/tags/day-by-day'>day-by-day</a><a class='topic-tag' href='/tags/documents'>documents</a><a class='topic-tag' href='/tags/procedures'>procedures</a><a class='topic-tag' href='/tags/guides'>guides</a><a class='topic-tag' href='/tags/security'>security</a></div>
+                <div class='other-tags'><b>Tags:</b> <a class='topic-tag' href='/tags/day-by-day.html'>day-by-day</a><a class='topic-tag' href='/tags/documents.html'>documents</a><a class='topic-tag' href='/tags/procedures.html'>procedures</a><a class='topic-tag' href='/tags/guides.html'>guides</a><a class='topic-tag' href='/tags/security.html'>security</a></div>
                 <div class="copyright">
                 Bạn được toàn quyền chia sẻ, trích dẫn hoặc copy, post lại, nhưng vui lòng ghi rõ nguồn, tác giả và không làm thay đổi nội dung bài viết. Nếu không làm vậy, thì OK, cũng ko sao, sẽ có thiên lôi thay ta dòm ngó nhà ngươi. 😈
                 </div>
