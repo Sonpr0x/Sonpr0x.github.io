@@ -15,7 +15,7 @@ Xem qua mấy cái tools trôi nổi
 Source: [Github](https://github.com/bascoe10/FTPUsernameEnumeration)   
 <img src="https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview" allow="autoplay">
 
-
+<iframe src="https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview" width="640" height="480" allow="autoplay"></iframe>
 [aw](https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview)
 
 Just based on FTP respose code (331: password required)  ??:D??   
