@@ -13,7 +13,7 @@ Xem qua mấy cái tools trôi nổi
 ### ftpuserenum.py
 
 Source: [Github](https://github.com/bascoe10/FTPUsernameEnumeration)   
-<img src="https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview">
+<img src="https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview" allow="autoplay">
 
 
 [aw](https://drive.google.com/file/d/1tJgpP3YNW06uPkKpENu_hnvWgwk2Pvty/preview)
