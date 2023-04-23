@@ -84,7 +84,7 @@ fn for_each_extension<F: Fn(&mut Shared, &Path) -> Option<Metadata>>(extension: 
 }
 
 fn generate_tags(text: &str, tags: &Vec<String>) -> String {
-    //dotenv().ok();
+    dotenv().ok();
     let output: Vec<String> = tags.into_iter().map(|t| format!("<a class='topic-tag' href='/tags/{}'>{}</a>", t, t)).collect();
     let inner_html = output.as_slice().join("");
     format!("<div class='other-tags'><b>{}Tags:</b> {}</div>", text, inner_html)
@@ -120,7 +120,7 @@ fn generate_meta(post: &Metadata) -> String {
 }
 
 fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts: Option<&Shared>) -> String {
-    //dotenv().ok();
+    dotenv().ok();
     let mut options = ComrakOptions::default();
     options.ext_strikethrough = true;
     options.ext_table = true;
@@ -144,10 +144,6 @@ fn apply_template(template: &str, post: &Metadata, tag_text: &str, related_posts
 }
 
 fn save_as_html(html: &str, output_path: &PathBuf) -> std::io::Result<bool> {
-<<<<<<< HEAD
-=======
-    println!("TEST: {}", output_path.display());
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
     let mut output_file = File::create(output_path)?;
     output_file.write_all(html.as_bytes())?;
     //rintln!("TEST: {}", output_file.display());
@@ -204,7 +200,7 @@ fn parse_metadata(path: &Path) -> Metadata {
 }
 
 fn generate_index_page(posts: &Vec<Metadata>) {
-    //dotenv().ok();
+    dotenv().ok();
     let date_format = env::var("DATE_FORMAT").unwrap();
     let _domain_name = env::var("DOMAIN_NAME").unwrap();
     if let Ok(template) = load_template("index") {
@@ -238,7 +234,7 @@ fn generate_index_page(posts: &Vec<Metadata>) {
 }
 
 fn generate_tags_page(tags: &HashMap<String, Vec<Article>>) {
-    //dotenv().ok();
+    dotenv().ok();
     if let Ok(template) = load_template("tags") {
         for (key, value) in tags.into_iter() {
             println!("{} - {:?}", key, value);
@@ -263,7 +259,7 @@ fn generate_tags_page(tags: &HashMap<String, Vec<Article>>) {
 }
 
 fn generate_rss_feed(posts: &Vec<Metadata>) {
-    //dotenv().ok();
+    dotenv().ok();
     let mut channel = ChannelBuilder::default()
         .title(env::var("RSS_TITLE").unwrap())
         .link(env::var("DOMAIN_NAME").unwrap())
@@ -290,11 +286,7 @@ fn generate_rss_feed(posts: &Vec<Metadata>) {
     }
     channel.set_items(items);
 
-<<<<<<< HEAD
     let mut output_file = File::create(r".\rss.xml").unwrap();
-=======
-    let mut output_file = File::create("./rss.xml").unwrap();
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
     output_file.write_all(channel.to_string().as_bytes()).unwrap();
 }
 
@@ -332,17 +324,12 @@ fn check(file_url: &str) -> bool {
 
 fn main() {
     dotenv().ok();
-    env::set_current_dir(Path::new(r"..\..\..\")).is_ok();
+    env::set_current_dir(Path::new(r"C:\Users\Admin\Documents\ristretto-rs-v2")).is_ok();
     let args: Vec<String> = env::args().collect();
     let mut folder = ".";
     if args.len() > 1 {
         let param = &args[1];
-
         if param != "preview" {
-<<<<<<< HEAD
-            
-=======
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
             folder = param;
             // Generator mode
 
@@ -400,17 +387,12 @@ fn main() {
                 println!("\n# Tags: ");
                 generate_tags_page(&shared.tags);
 
-<<<<<<< HEAD
                 println!("\n# RSS generate:");
-=======
-                println!("RSSSSSSSSSSSSSSSSSSSSS");
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
                 generate_rss_feed(&posts);
             }
 
         } else {
             // Preview mode
-<<<<<<< HEAD
             let IP = "localhost:3123";
             println!("Preview server running at {}", &IP);
 
@@ -418,15 +400,6 @@ fn main() {
                 {   
                     let response = rouille::match_assets(&request, ".");
 
-=======
-            println!("Preview server running at 10.0.0.11:3123");
-
-            rouille::start_server("10.0.0.11:3123", |request| {
-                {
-                    let response = rouille::match_assets(&request, ".");
-                    //return rouille::Response::text("hello world");
-                    println!("MATCHING {:?}", response);
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
                     if response.is_success() {
                         return response;
                     }
@@ -434,10 +407,9 @@ fn main() {
                 router!(request,
                     // route post
                     (GET) (/posts/{file_name: String}) => {
-<<<<<<< HEAD
                         let cc = check(&file_name);
                         if cc {
-                            let f = File::open(format!(r".\posts\{}.html", file_name));
+                            let f = File::open(format!("posts/{}.html", file_name));
                             let mut output = String::new();
                             f.expect("can't read").read_to_string(&mut output).unwrap();
                             return rouille::Response::html(output);
@@ -450,7 +422,7 @@ fn main() {
                     (GET) (/{file_name: String}) => {
                         let cc = check(&file_name);
                         if cc {
-                            let f = File::open(r".\index.html");
+                            let f = File::open("index.html");
                             let mut output = String::new();
                             f.expect("can't read").read_to_string(&mut output);
                             return rouille::Response::html(output);
@@ -488,30 +460,6 @@ fn main() {
                         }
                     },*/
 
-=======
-                        let f = File::open(format!("./posts/{}.html", file_name));
-                        let mut output = String::new();
-                        f.expect("Unable to open").read_to_string(&mut output);
-                        return rouille::Response::html(output);
-                        rouille::Response::empty_404()
-                    },
-
-                    // route index
-                    (GET) (/) => {
-                        let f = File::open("index.html");
-                        let mut output = String::new();
-                        f.expect("Unable to open").read_to_string(&mut output);
-                        return rouille::Response::html(output);
-                    },
-
-                    //route tag
-                    (GET) (/tags/{file_name: String}) => {
-                        let f = File::open(format!("./tags/{}.html", file_name));
-                        let mut output = String::new();
-                        f.expect("Unable to open").read_to_string(&mut output);
-                        return rouille::Response::html(output);
-                    },
->>>>>>> 144f80075be44b3c0ee3caf2b4cb817b83bfa6d9
 
                     _ => rouille::Response::empty_404()
                 )

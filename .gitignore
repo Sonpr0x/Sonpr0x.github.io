@@ -1,5 +1,5 @@
 posts/*.md
 tags/*.md
-gen.exe
-rss.xml
 .env
+nothing.py
+generator-rs/*
