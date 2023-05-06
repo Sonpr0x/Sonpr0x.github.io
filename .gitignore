@@ -2,4 +2,4 @@ posts/*.md
 tags/*.md
 .env
 nothing.py
-generator-rs/*
+generator-rs/target
